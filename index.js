@@ -14,6 +14,7 @@ const port = 9000;
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
 const registerHandlers = () => {
   _.map(handlers, (handlers, path) => {
     console.log(handlers, path);

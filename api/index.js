@@ -1,4 +1,4 @@
-const {facialRecognitionDocs} = require('./facialRecognitionDocuments');
+const {facialRecognitionDocs} = require('./getDocuments');
 
 const handlers = {...facialRecognitionDocs};
 
