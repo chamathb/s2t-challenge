@@ -1,53 +1,38 @@
-const _ = require('lodash');
 const express = require('express');
-const BodyParser = require("body-parser");
-const { handlers } = require('./api');
+const BodyParser = require('body-parser');
 const log4js = require('log4js');
-const { HTTP_METHODS } = require('./conf');
-const cors = require('cors');
-log4js.configure('./conf/log4js.json');
-const log = log4js.getLogger('startup');
 
-const app = express();
+log4js.configure({
+  appenders: { app: { type: 'file', filename: 'app.log' }, out: { type: 'stdout' } },
+  categories: { default: { appenders: ['app', 'out'], level: 'INFO' } }
+});
+
+const logger = log4js.getLogger('app');
+
+const { initPassport, passport , authentication } = require('./middlewares/authentication');
+
+const authorization = require('./middlewares/authorization');
+
+const { faceAnalyzerProxy } = require('./services/ProxyService');
+
+const reqLogger = require('./middlewares/requestLogger');
+
+const robotDetector = require('./middlewares/robotDetector');
+
 const port = 9000;
 
+const app = express();
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
-app.use(cors());
 
-const registerHandlers = () => {
-  _.map(handlers, (handlers, path) => {
-    console.log(handlers, path);
-    _.map(handlers, ({method, handler}) => {
-      switch (method) {
-        case HTTP_METHODS.POST: {
-          app.post(path, handler);
-          break;
-        }
-        case HTTP_METHODS.GET: {
-          app.get(path, handler);
-          break;
-        }
-        case HTTP_METHODS.DELETE: {
-          app.delete(path, handler);
-          break;
-        }
-        case HTTP_METHODS.PUT: {
-          app.put(path, handler);
-          break;
-        }
-      }
-      log.info(`registered handle with path [${path}] method [${method}]`);
-    });
-  });
-};
+app.use(passport.initialize());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+initPassport();
 
-registerHandlers();
+app.use(reqLogger);
 
-app.listen(port, () => {
-  //init();
-  console.log(`App listening on port ${port}!`);
-  log.info(`App listening on port ${port}!`)
-});
+app.use(robotDetector);
+
+app.get('/ai_module/api/analyzer/:querySubject', authentication, authorization, faceAnalyzerProxy);
+
+app.listen(port, () => logger.info(`Proxy server listening on port ${port}!`));
