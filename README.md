@@ -1,8 +1,8 @@
 # s2t-challenge
 
 ### Steps to run
-from project root, run `npm install` to install dependencies 
-run `npm start` to start the application
+- from project root, run `npm install` to install dependencies 
+- run `npm start` to start the application
 
 
 ## Deployment Suggestions
