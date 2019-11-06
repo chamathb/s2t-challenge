@@ -5,6 +5,13 @@
 - run `npm start` to start the application
 
 
+### Sample Requests
+- Without user role header 
+`curl -X GET -H "Authorization:Bearer 123456789" -vvv http://localhost:9000/ai_module/api/analyzer/faces?itemsPerPage=12&pageNumber=2`
+- With user role header 
+`curl -X GET -H "Authorization:Bearer 123456789" -H "user-role: ADMIN" -vvv http://localhost:9000/ai_module/api/analyzer/faces?itemsPerPage=12&pageNumber=2`
+
+
 ## Deployment Suggestions
 1. We can decide the technology, service provider like AWS and design the 
 deployment architecture ex: micro-services architecture with AWS ECS/Beanstalk
