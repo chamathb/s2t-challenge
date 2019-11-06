@@ -13,7 +13,7 @@ deployment architecture ex: micro-services architecture with AWS ECS/Beanstalk
    DockerHub or Elastic Container Repository
 3. Then we can evaluate and select our options on the cloud service provider
  ex: AWS ECS, AWS Beanstalk
-4. If we already using AWS ECS like services we can register this as 
+4. If we already using AWS ECS like technology stack we can register this as 
 a ECS task(For AWS)
-5. If not we can select beanstalk deployment to deploy it in
-micro-services architecture(For AWS) 
+5. If not we can select elastic beanstalk technology stack
+ for deploy this service as a micro-service(For AWS) 
